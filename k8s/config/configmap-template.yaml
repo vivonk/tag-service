@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config
+  namespace: docket
+data:
+  AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+  AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+  AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION}"
+  QUEUE_NAME: "${QUEUE_NAME}"
+  DLQ_NAME: "${DLQ_NAME}"
+  AWS_ACCOUNT_ID: "${AWS_ACCOUNT_ID}"
+  AI_SERVICE_URL: "${AI_SERVICE_URL}"
+  MODEL_NAME: "${MODEL_NAME}"

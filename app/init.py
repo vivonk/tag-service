@@ -13,11 +13,6 @@ def init_dynamo_db():
 		                      BillingMode='PAY_PER_REQUEST')
 
 
-def init_kafka():
-	pass
-
-
 def init():
 	logging.info("Initializing the application...")
 	init_dynamo_db()
-	init_kafka()
