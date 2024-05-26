@@ -28,13 +28,6 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-    - name: Build and push
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: <docker_username>/<image_name>:latest
-
     - name: Build and push ai-model-service
       uses: docker/build-push-action@v2
       with:
