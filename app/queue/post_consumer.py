@@ -44,6 +44,7 @@ def process_queue():
 
 
 if __name__ == "__main__":
+	logging.info("Starting up tag request consumer")
 	# run both process methods in threads and wait for threads
 	# to finish before exiting
 	queue_thread = threading.Thread(target=process_queue)
@@ -52,4 +53,4 @@ if __name__ == "__main__":
 	dlq_thread.start()
 	queue_thread.join()
 	dlq_thread.join()
-	logging.info("Exiting post consumer")
+	logging.info("Exiting tag request consumer")

@@ -2,12 +2,16 @@ import boto3
 from botocore.exceptions import ClientError
 import logging
 
+import app.config
 from app.config import aws_account_id
-
+logging.info(app.config.aws_account_id)
+logging.info(app.config.ai_service_url)
 sqs = boto3.client('sqs')
 
 
 def add_message(message: str, queue_name: str):
+	logging.info(app.config.aws_account_id)
+	logging.info(app.config.ai_service_url)
 	try:
 		response = sqs.send_message(
 			QueueUrl=get_queue_url(queue_name),

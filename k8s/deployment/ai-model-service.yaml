@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-model-service
+  namespace: docket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-model-service
+  template:
+    metadata:
+      labels:
+        app: ai-model-service
+    spec:
+      containers:
+      - name: ai-model-service
+        image: appsmithvivonk/ai-model-service:latest
+        ports:
+        - containerPort: 11434
+        resources:
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+          requests:
+            cpu: "2"
+            memory: "4Gi"

@@ -9,10 +9,20 @@ resource "aws_sqs_queue" "tag-request-queue" {
     deadLetterTargetArn = aws_sqs_queue.tag-request-dlq.arn
     maxReceiveCount     = 4
   })
+
+  tags = {
+    CreatedBy = "Terraform",
+    Environment = "Test"
+  }
 }
 
 
 # Create a dead letter queue for the main queue
 resource "aws_sqs_queue" "tag-request-dlq" {
   name = "tag-request-dlq"
+
+  tags = {
+    CreatedBy = "Terraform",
+    Environment = "Test"
+  }
 }

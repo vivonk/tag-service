@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tag-service
+  namespace: docket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tag-service
+  template:
+    metadata:
+      labels:
+        app: tag-service
+    spec:
+      containers:
+      - name: tag-service
+        image: appsmithvivonk/tag-service:latest
+        resources:
+          limits:
+            cpu: "1"
+            memory: "500Mi"
+          requests:
+            cpu: "0.5"
+            memory: "200Mi"
+        envFrom:
+          - configMapRef:
+              name: env-config

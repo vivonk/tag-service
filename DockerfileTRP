@@ -1,0 +1,16 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim-buster
+
+# Set the working directory in the container to /app
+WORKDIR /opt/tag-service
+
+# Add the current directory contents into the container at /app
+ADD app/ app/
+ADD requirements.txt requirements.txt
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+ENV PYTHONPATH=/opt/tag-service
+
+# Run the command to start tag request processor
+CMD ["python", "app/queue/post_consumer.py"]

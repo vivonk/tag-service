@@ -1,0 +1,18 @@
+# tag-service-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tag-service-ingress
+  namespace: docket
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tag-service
+            port:
+              number: 80

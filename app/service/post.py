@@ -5,6 +5,8 @@ from app.model.tagging import TaggingRequest
 import app.model.post as post
 from app.repository import post as post_repo
 from app.queue import post_producer
+import urllib3
+urllib3.disable_warnings()
 
 """
 This function is used to add a post to the database and alongside add the same tag request to the kafka topic
@@ -38,4 +40,4 @@ def get_post(post_id: str):
 	value = find_post(post_id)
 	if value is None:
 		raise HTTPException(status_code=404, detail="Post not found")
-	return post.Post(post_id=value["post_id"], content=value["content"])
+	return value
