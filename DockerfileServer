@@ -5,7 +5,8 @@ FROM python:3.9-slim-buster
 WORKDIR /opt/tag-service
 
 # Add the current directory contents into the container at /app
-ADD . .
+ADD app/ app/
+ADD requirements.txt requirements.txt
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
@@ -13,5 +14,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
-# Run the command to start uVicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the command to start fastapi server
+CMD ["fastapi", "run", "app/server.py", "--port", "8000"]

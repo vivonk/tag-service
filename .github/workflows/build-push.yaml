@@ -1,0 +1,63 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: <docker_username>/<image_name>:latest
+
+    - name: Build and push ai-model-service
+      uses: docker/build-push-action@v2
+      with:
+        context: ./ai-model
+        file: ./ai-model/Dockerfile
+        platforms: linux/amd64
+        push: true
+        tags: appsmithvivonk/ai-model-service:latest
+
+    - name: Build and push tag-service
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./DockerfileServer
+        platforms: linux/amd64
+        push: true
+        tags: appsmithvivonk/tag-service:latest
+
+    - name: Build and push tag-request-processor
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./DockerfileTRP
+        platforms: linux/amd64
+        push: true
+        tags: appsmithvivonk/tag-request-processor:latest
