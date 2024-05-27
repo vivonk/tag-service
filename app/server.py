@@ -9,6 +9,7 @@ app = FastAPI()
 
 logger = logger.bind(name="app")
 
+
 @app.on_event("startup")
 async def startup_event():
 	init()
