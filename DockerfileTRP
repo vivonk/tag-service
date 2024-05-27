@@ -6,10 +6,10 @@ WORKDIR /opt/tag-service
 
 # Add the current directory contents into the container at /app
 ADD app/ app/
-
+WORKDIR /opt/tag-service/app
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 ENV PYTHONPATH=/opt/tag-service
 
 # Run the command to start tag request processor
-CMD ["python", "app/queue/post_consumer.py"]
+CMD ["python", "queue/post_consumer.py"]
