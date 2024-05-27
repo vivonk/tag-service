@@ -3,10 +3,11 @@ from app.model import tagging, post
 from app.service import post as post_service
 from app.init import init
 
-from app.utility.logger import logger
+from loguru import logger
 
 app = FastAPI()
 
+logger = logger.bind(name="app")
 
 @app.on_event("startup")
 async def startup_event():

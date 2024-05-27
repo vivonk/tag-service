@@ -1,9 +1,10 @@
-import logging
+from loguru import logger
 
 import boto3
 from botocore.exceptions import ClientError
 
 from app.exception.DbException import DbException
+logger = logger.bind(name="dynamodb")
 
 # Create a DynamoDB client
 dynamodb = boto3.client('dynamodb')
@@ -20,7 +21,7 @@ def add_item(obj: dict, table_name: str):
 		)
 		return response
 	except ClientError as e:
-		logging.error(e)
+		logger.error(e)
 		raise DbException(e.response)
 
 
@@ -34,7 +35,7 @@ def find_item(key: dict, table_name: str):
 			return None
 		return response['Item']
 	except ClientError as e:
-		logging.error(e)
+		logger.error(e)
 		if match_error(e, 'ResourceNotFoundException'):
 			return None
 		raise DbException(e.response)

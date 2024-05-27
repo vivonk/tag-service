@@ -1,5 +1,7 @@
 from signal import SIGINT, SIGTERM, signal
+from loguru import logger
 
+logger = logger.bind(name="signal_handler")
 
 class SignalHandler:
 	def __init__(self):
@@ -8,5 +10,5 @@ class SignalHandler:
 		signal(SIGTERM, self._signal_handler)
 	
 	def _signal_handler(self, signal, frame):
-		print(f"handling signal {signal}, exiting gracefully")
+		logger.info(f"handling signal {signal}, exiting gracefully")
 		self.received_signal = True
