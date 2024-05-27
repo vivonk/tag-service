@@ -27,7 +27,8 @@ Most of the process is streamlined and is automated. However, there are some man
    2. terraform-deploy: This workflow applies the terraform scripts to create the required resources in AWS.
    3. k8s-deploy: This workflow applies the kubernetes manifests to deploy the tag service to the production environment.
 4. Whenever we create a new environment for the first time, expectation is, it is deployed manually first time and then onwards it will be automated. <br> In our case, only one component we need to deploy manually that's ingress controller because we don't want to make the changes to ingress controller frequently, and it is a one time setup.
-5. To deploy the ingress controller, follow the below steps
+5. Once we have deployed the complete infrastructure using terraform, and applied the k8s manifest files, we need to deploy the ingress controller to expose the tag service to the internet.
+6. To deploy the ingress controller, follow the below steps
    - Make sure you have helm installed in your local machine and kubeconfig is pointing to the production cluster.
    - Add the ingress-nginx repository to helm:
       ```shell
@@ -38,5 +39,5 @@ Most of the process is streamlined and is automated. However, there are some man
       helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace
       ``` Deploy the ingress controller:
    
-6. Once the ingress controller is deployed, the tag service will be accessible to the internet.
+7. Once the ingress controller is deployed, the tag service will be accessible to the internet.
 
