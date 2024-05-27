@@ -26,10 +26,16 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Working directory terraform
-        run: cd terraform
+        run: |
+          cd terraform/
+          pwd
+          echo "Working directory changed to terraform"
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          pwd
+          echo "PWD is $PWD"  
+          terraform init
 
       - name: Terraform Validate
         run: terraform validate

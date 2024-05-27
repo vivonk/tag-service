@@ -32,16 +32,16 @@ jobs:
         run: |
           curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
-          sudo ./aws/install
+          ./aws/install
           aws --version
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           chmod +x kubectl
-          sudo mv kubectl /usr/local/bin/
+          mv kubectl /usr/local/bin/
           aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
 
       - name: Env substitution
         run: |
-          envsubst < k8s/template/configmap-template.yaml > k8s/manifests/configmap.yaml
+          envsubst < k8s/template/configmap-template.yaml > k8s/config/configmap.yaml
 
       - name: Apply k8s files
         run: |
