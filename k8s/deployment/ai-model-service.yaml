@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: ai-model-service
   namespace: docket
+  labels:
+    keel.sh/policy: force
 spec:
   replicas: 1
   selector:
@@ -16,6 +18,7 @@ spec:
       containers:
       - name: ai-model-service
         image: appsmithvivonk/ai-model-service:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 11434
         resources:

@@ -40,4 +40,11 @@ Most of the process is streamlined and is automated. However, there are some man
       ``` Deploy the ingress controller:
    
 7. Once the ingress controller is deployed, the tag service will be accessible to the internet.
+8. To make our services automatically update whenever a new image is pushed to the docker hub, we need to install a watcher container running in the production environment.
+  - Tool: keel
+  - Installation steps:
+    ```shell
+    helm repo add keel https://charts.keel.sh 
+    helm upgrade --install keel --namespace=kube-system keel/keel
+    ```
 
