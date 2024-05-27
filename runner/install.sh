@@ -5,5 +5,5 @@ curl -o actions-runner-linux-x64-2.316.1.tar.gz -L https://github.com/actions/ru
 tar xzf ./actions-runner-linux-x64-2.316.1.tar.gz
 export RUNNER_ALLOW_RUNASROOT="1"
 # Create the runner and start the configuration experience
-./config.sh --url https://github.com/vivonk/tag-service --token AGDHB6RBM2JAX6DNMOQHLNDGKSQFI
+./config.sh --url https://github.com/vivonk/tag-service --token github-token
 ./run.sh

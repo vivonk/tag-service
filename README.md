@@ -1,31 +1,35 @@
 # Tag service
-Tag service is designed to provide a way to tag posts in the forum.
+Tag service is designed to provide a way to tag posts in the forum. Tag service underlying use LLM for classifying the tags automatically.
+Current implementation is designed to process the tag requests asynchronously. 
+
+## Feature
+We are replicating the tagging feature of Stackoverflow but with the twist of AI.
+User will simply post on the forum, and we receive a tag request for that post. Based on our models understanding, we will generate tags automatically for the post and store it in the database.
+Later, whenever forum service requires tags for a post, it can simply query our service and get the tags.
 
 # Architecture
 https://miro.com/app/board/uXjVKKtdQdE=/?share_link_id=71865115152
 
-This service is deployed in a Kubernetes cluster. The service is exposed to the internet using an AWS ELB.
+This service is deployable in a Kubernetes cluster and service is exposed to the internet using an AWS ELB.
 
 ### Components
 1. AWS ELB - Load balancer - to distribute incoming traffic across multiple targets
-2. Nginx Ingress Controller - to manage external access to services in a Kubernetes cluster
-3. Tag service - to provide a way to tag posts in the forum
+2. Nginx Ingress Controller - Provides external access to services in a Kubernetes cluster using ingress rules
+3. Tag service - to provide a way to send posts for tagging
 4. DynamoDB - to store posts with tags
-5. Kafka - to process tag requests asynchronously
+5. SQS - to process tag requests asynchronously
 6. Tag request processor - to process tag requests asynchronously
 7. AI Model service - to provide a way to generate tags for posts
-8. Redis - to store frequently asked posts
-9. Callback service - to provide a way to callback client about the status of the tag request
-10. Log service - to store logs of the service
+8. Redis (Not part of the v1) - to store frequently asked posts 
+9. Cloudwatch - store the logs and metrics of the services
 
 ### Communication
 1. The client sends a tag request to the Tag service through the AWS ELB.
-2. The Tag service sends the tag request to the Kafka topic.
+2. The Tag service sends the tag request to the SQS topic.
 3. The Tag request processor processes the tag request and sends it to the AI Model service.
 4. The AI Model service generates tags for the post and sends them back to the Tag request processor.
 5. The Tag request processor stores the tags in DynamoDB.
-6. The Tag request processor adds a completion event to Kafka with the status of the tag request.
-7. The Callback service receives the completion event as consumer of Kafka topic and sends a callback to the client.
+6. The client queries the Tag service for tags for a post.
 
 ### Deployment
 The Tag service is deployable as a Kubernetes cluster.
