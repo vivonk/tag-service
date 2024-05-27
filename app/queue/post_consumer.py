@@ -2,11 +2,12 @@ import boto3
 import app.config as config
 from app.queue.common import SignalHandler
 from app.processor import tag_request_processor
-import logging
 import warnings
 import urllib3
 import threading
+from loguru import logger
 
+logger = logger.bind(name="tag_request_consumer")
 # Suppress the InsecureRequestWarning for all urllib3 connections
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -26,7 +27,7 @@ def process_dlq():
 			try:
 				tag_request_processor.process(message.body)
 			except Exception as e:
-				logging.error(f"exception while processing message: {repr(e)}")
+				logger.error(f"exception while processing message: {repr(e)}")
 				continue
 			message.delete()
 
@@ -38,13 +39,13 @@ def process_queue():
 			try:
 				tag_request_processor.process(message.body)
 			except Exception as e:
-				logging.error(f"exception while processing message: {repr(e)}")
+				logger.error(f"exception while processing message: {repr(e)}")
 				continue
 			message.delete()
 
 
 if __name__ == "__main__":
-	logging.info("Starting up tag request consumer")
+	logger.info("Starting up tag request consumer")
 	# run both process methods in threads and wait for threads
 	# to finish before exiting
 	queue_thread = threading.Thread(target=process_queue)
@@ -53,4 +54,4 @@ if __name__ == "__main__":
 	dlq_thread.start()
 	queue_thread.join()
 	dlq_thread.join()
-	logging.info("Exiting tag request consumer")
+	logger.info("Shutting down tag request consumer")
