@@ -38,6 +38,9 @@ jobs:
           chmod +x kubectl
           mv kubectl /usr/local/bin/
           aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
+          curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+          mv /tmp/eksctl /usr/local/bin
+          eksctl version
 
       - name: Env substitution
         run: |
@@ -46,4 +49,22 @@ jobs:
       - name: Apply k8s files
         run: |
           echo "Will apply all deployments, services, configmaps, and hpa files in k8s directory."
-          find ./k8s -type f -not -path "./k8s/template/*" -exec kubectl apply -f {} \;
+          kubectl apply -f k8s/namespace/
+          kubectl apply -f k8s/config/
+          kubectl apply -f k8s/deployment/
+          kubectl apply -f k8s/service/
+          kubectl apply -f k8s/hpa/
+          kubectl apply -f k8s/ingress/
+
+      - name: Create service account
+        run: |
+            eksctl create iamserviceaccount --name fluent-bit \
+            --namespace amazon-cloudwatch \
+            --cluster $EKS_CLUSTER_NAME --role-name fluent-bit \
+            --attach-policy-arn arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy \
+            --approve --region $AWS_DEFAULT_REGION \
+            --override-existing-serviceaccounts
+
+      - name: Apply Cloudwatch agent changes
+        run: |
+          kubectl apply -f k8s/cwagent-fluent-bit.yaml

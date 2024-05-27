@@ -193,7 +193,6 @@ Here are the commands to apply these files:
 6. Apply the Ingress:
 
       ```shell
-      kubectl apply -f k8s/ingress-nginx-service.yaml
-      kubectl apply -f k8s/tag-service-ingress.yaml
+      kubectl apply -f k8s/ingress/tag-service-ingress.yaml
       ```
     These commands create the Ingress resources. The Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.

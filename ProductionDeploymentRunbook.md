@@ -51,3 +51,8 @@ Most of the process is streamlined and is automated. However, there are some man
       helm upgrade --install keel --namespace=kube-system keel/keel
       ```
 11. Once the watcher container is installed, it will detect the changes in the docker hub and trigger the re-deployment of the tag service using the updated image.
+
+## Logging and Monitoring
+1. Workflow monitoring: Head into GitHub Actions to monitor the workflows.
+2. Service monitoring: Use Cloudwatch to monitor the services.
+3. Service logs: Use Cloudwatch to view the logs of the services.
