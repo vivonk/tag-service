@@ -45,6 +45,5 @@ jobs:
 
       - name: Apply k8s files
         run: |
-          echo "Will apply all deployments successfully"
-          kubectl version --client
-          kubectl get pods -n docket
+          echo "Will apply all deployments, services, configmaps, and hpa files in k8s directory."
+          find ./k8s -type f -not -path "./k8s/template/*" -exec kubectl apply -f {} \;
