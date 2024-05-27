@@ -38,6 +38,7 @@ Please refer to the [setup guide](SETUP.md) for the setup instructions.
 ### [Production Runbook](ProductionDeploymentRunbook.md)
 Here is the [guide](ProductionDeploymentRunbook.md) on how this service is being deployed in production.
 
+### [CI/CD workflows](Workflow.md)
 ### Decision Log
 Why Kubernetes?
 - Kubernetes is a popular open-source container orchestration platform that can automate the deployment, scaling, and management of containerized applications.
