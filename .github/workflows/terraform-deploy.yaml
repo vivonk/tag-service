@@ -24,6 +24,9 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
+    - name: Working directory terraform
+      run: cd terraform
+
     - name: Terraform Init
       run: terraform init
 
@@ -34,4 +37,4 @@ jobs:
       run: terraform plan
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply --auto-approve
