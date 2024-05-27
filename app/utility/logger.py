@@ -1,10 +1,12 @@
-import logging
+from loguru import logger
 import sys
 
-logging.basicConfig(
-	stream=sys.stdout,
+# Remove default handler to avoid duplicate logs
+logger.remove()
+
+# Add new handler with the desired configuration
+logger.add(
+	sys.stdout,
 	level="INFO",
-	format="[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s",  # noqa: E501
-	datefmt="%d/%b/%Y %H:%M:%S",
+	format="[<green>{time:DD/MMM/YYYY HH:mm:ss}</green>] <level>{level}</level> [<cyan>{name}</cyan>.<cyan>{function}</cyan>:<cyan>{line}</cyan>] <level>{message}</level>",
 )
-logger = logging.getLogger("tag-service")
