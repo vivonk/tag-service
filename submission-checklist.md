@@ -18,4 +18,27 @@
      - CI/CD pipeline is used to automate the deployment process
      - Manual steps are minimized and are only required at 1-2 places
      - All the deployments are done using the infrastructure as a code (IaaS)
-     - 
+
+
+
+#### Test out the service by using following APIs:
+Live Hosting URL: http://ab375f2b3c43e44099cd13254ae94934-30142821.ap-south-1.elb.amazonaws.com 
+1. Add a new post for tag
+   - POST `/post/tag`
+   - Request Body:
+     ```json
+     {
+        "post_id": "13",
+        "content": "I am facing a lot of problems with creating partitions in Kafka using shell command, is there any automated way in Java for recreating the partitions?"
+     }
+     ```
+2. Get tags for a post
+   - GET `/post/{post_id}`
+   - Response:
+     ```json
+     {
+        "post_id": "13",
+        "tags": ["kafka", "java", "shell"]
+     }
+     ```
+     

@@ -16,10 +16,10 @@ Most of the process is streamlined and is automated. However, there are some man
    2. variables - 
       ```shell
         AI_SERVICE_URL - url of the ai model service
-        DLQ_NAME - dead letter queue name created by terraform
-        EKS_CLUSTER_NAME - name of the eks cluster created by terraform
-        MODEL_NAME - name of the ai model deployed in the ai model service
-        QUEUE_NAME - queue name created by terraform
+        DLQ_NAME - dead letter queue name defined in terraform file sqs.tf
+        EKS_CLUSTER_NAME - name of the eks cluster defined in terraform file main.tf
+        MODEL_NAME - name of the ai model defined in the ai model service
+        QUEUE_NAME - queue name defined in terraform file sqs.tf
         ```
 2. Once the variables and secrets are configured, workflows will be triggered automatically whenever a new commit is detected in the master branch.
 3. Workflows and their workings:

@@ -1,10 +1,19 @@
 # Setup for running in Local
-### Prerequisites
+## Prerequisites
 - Docker
 - Python 3.x
 - AWS Account
 - AWS CLI configured with appropriate permissions
  - .env file with necessary environment variables
+
+## API Endpoints (available after setup)
+Tag Service
+   - POST /post/tag
+     - Request Body: {"post_id": "1", "content": "This is a sample post"}
+     - Response: 201 OK CREATED
+   - GET /post/{post_id}
+     - Response: {"post_id": "1", "tags": ["tag1", "tag2"]}
+
 
 ### Create AWS SQS Queue
 Create two SQS queues in your AWS account
@@ -14,18 +23,32 @@ Create two SQS queues in your AWS account
    - `cp env.example .env`
 4. Update the .env file with the queue names
 
+Fill out the .env file with the following appropriate values:
+```shell
+AWS_ACCESS_KEY_ID=<your_access_key_id>
+AWS_SECRET_ACCESS_KEY=<your_secret_access_key>
+AWS_DEFAULT_REGION=<your_default_region>
+QUEUE_NAME=<queue-you-created>
+DLQ_NAME=<dlq-you-created>
+AWS_ACCOUNT_ID=<your_aws_account_id>
+AI_SERVICE_URL=<http://host.docker.internal:11434/http://localhost:11434>
+MODEL_NAME=tag-posts
+```
+AI_SERVICE_URL value depends on deployment type: 
+<br>If you are deploying tag-request-processor as docker container, use http://host.docker.internal:11434. 
+<br>If you are running tag-request-processor locally, use http://localhost:11434
 ### Build and Run AI Model Service in Docker
 
 Build and run the AI Model Service in Docker. The AI Model Service is a REST API that provides a stable endpoint to access the AI model.
-
 ```shell
 docker buildx build --platform=linux/amd64 -t ai-model-service -f ai-model/Dockerfile ai-model/
 docker run -d -p 11434:11434 --env-file .env ai-model-service
 ```
 
 ### Install Python Dependencies
-
+In app directory, run following command
 ````shell
+cd app/
 pip install -r requirements.txt
 ````
 
@@ -36,23 +59,23 @@ pip install -r requirements.txt
 - Configure environment variables: Go to Run > Edit Configurations, select your run configuration, and set the environment variables from your .env file.
 - Run the scripts:
 - For the Tag Service, configure and run server.py.
-- For the Tag Request Processor, configure and run tag_request_processor.py .
+- For the Tag Request Processor, configure and run post_consumer.py .
 
 #### Running from Command Line
 
 Alternatively, you can run the services from the command line:
 
-- Load environment variables from the [.env](local.env) file:
+- Load environment variables from the [.env](.env) file:
 ```shell
 export $(cat .env | xargs)
 ```
 - Run the Tag Service:
 ```shell
-python server.py
+fastapi run app/server.py --port 8000
 ```
 - Run the Tag Request Processor:
 ```shell
-python tag_request_processor.py
+python app/queue/post_consumer.py
 ```
 
 ### Local Deployment using Docker
@@ -76,8 +99,25 @@ python tag_request_processor.py
         docker run -d --env-file .env tag-request-processor
         ```
 
+Now with any of the methods, service should be accessible at http://localhost:8000
 
+#### Docker Images
+- ai-model-service
+- tag-service
+- tag-request-processor
 
+#### Tag commands
+```shell
+docker tag ai-model-service:latest appsmithvivonk/ai-model-service:latest
+docker tag tag-service:latest appsmithvivonk/tag-service:latest
+docker tag tag-request-processor:latest appsmithvivonk/tag-request-processor:latest
+```
+#### Push commands
+```shell
+docker push appsmithvivonk/ai-model-service:latest
+docker push appsmithvivonk/tag-service:latest
+docker push appsmithvivonk/tag-request-processor:latest
+```
 
 # Setup to run in Kubernetes:
 
@@ -147,21 +187,3 @@ These commands create the Horizontal Pod Autoscalers for your deployments. The H
   kubectl apply -f k8s/tag-service-ingress.yaml
   ```
 These commands create the Ingress resources. The Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
-
-#### Docker Images
-- ai-model-service
-- tag-service
-- tag-request-processor
-
-#### Tag commands
-```shell
-docker tag ai-model-service:latest appsmithvivonk/ai-model-service:latest
-docker tag tag-service:latest appsmithvivonk/tag-service:latest
-docker tag tag-request-processor:latest appsmithvivonk/tag-request-processor:latest
-```
-#### Push commands
-```shell
-docker push appsmithvivonk/ai-model-service:latest
-docker push appsmithvivonk/tag-service:latest
-docker push appsmithvivonk/tag-request-processor:latest
-```

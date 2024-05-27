@@ -8,9 +8,8 @@ User will simply post on the forum, and we receive a tag request for that post. 
 Later, whenever forum service requires tags for a post, it can simply query our service and get the tags.
 
 # Architecture
+Here is the link to the system design and CI/CD workflow
 https://miro.com/app/board/uXjVKKtdQdE=/?share_link_id=71865115152
-
-This service is deployable in a Kubernetes cluster and service is exposed to the internet using an AWS ELB.
 
 ### Components
 1. AWS ELB - Load balancer - to distribute incoming traffic across multiple targets
@@ -20,7 +19,7 @@ This service is deployable in a Kubernetes cluster and service is exposed to the
 5. SQS - to process tag requests asynchronously
 6. Tag request processor - to process tag requests asynchronously
 7. AI Model service - to provide a way to generate tags for posts
-8. Redis (Not part of the v1) - to store frequently asked posts 
+8. Redis (Not part of the v1) - to store frequently asked post tags
 9. Cloudwatch - store the logs and metrics of the services
 
 ### Communication
@@ -31,13 +30,13 @@ This service is deployable in a Kubernetes cluster and service is exposed to the
 5. The Tag request processor stores the tags in DynamoDB.
 6. The client queries the Tag service for tags for a post.
 
-### [Setup](SETUP)  
+### [Setup](SETUP.md)  
 
-Please refer to the [setup.md](SETUP) for the setup instructions.
+Please refer to the [setup guide](SETUP.md) for the setup instructions.
 
 
-### Security and Compliance
-TODO
+### [Production Runbook](ProductionDeploymentRunbook.md)
+Here is the [guide](ProductionDeploymentRunbook.md) on how this service is being deployed in production.
 
 ### Decision Log
 Why Kubernetes?
@@ -48,11 +47,11 @@ Why Kubernetes?
 - Kubernetes provides monitoring and logging capabilities. It can collect metrics and logs from containers and nodes for debugging and analysis.
 - Kubernetes provides security features such as network policies, RBAC, and secrets management. 
 
-Why Kafka?
-- Kafka is a distributed event streaming platform that can handle high throughput and low latency. It is a good choice for processing tag requests asynchronously.
-- Kafka provides fault tolerance and scalability. It can handle large volumes of data and can be easily scaled up or down.
-- Kafka provides durability and reliability. It can store messages for a configurable period of time and can replay messages in case of failure.
-- Kafka provides a way to decouple the producer and consumer. It allows the producer to send messages without waiting for the consumer to process them.
+Why SQS?
+- SQS is a distributed event streaming platform that can handle high throughput and low latency. It is a good choice for processing tag requests asynchronously.
+- SQS provides fault tolerance and scalability. It can handle large volumes of data and can be easily scaled as we go.
+- SQS provides durability and reliability. It can store messages for a configurable period of time and can replay messages in case of failure through DLQ.
+- SQS provides a way to decouple the producer and consumer. It allows the producer to send messages without waiting for the consumer to process them.
 
 Why DynamoDB?
 - DynamoDB is a fully managed NoSQL database service provided by AWS. It is a good choice for storing posts with tags.
