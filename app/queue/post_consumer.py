@@ -34,7 +34,7 @@ def process_dlq():
 
 def process_queue():
 	while not signal_handler.received_signal:
-		messages = queue.receive_messages(MaxNumberOfMessages=10, WaitTimeSeconds=20, )
+		messages = queue.receive_messages(MaxNumberOfMessages=20, WaitTimeSeconds=5, )
 		for message in messages:
 			try:
 				tag_request_processor.process(message.body)

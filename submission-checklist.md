@@ -16,13 +16,14 @@
      - Cloudwatch is used to store the logs and metrics of the services
    - Process:
      - CI/CD pipeline is used to automate the deployment process
-     - Manual steps are minimized and are only required at 1-2 places
-     - All the deployments are done using the infrastructure as a code (IaaS)
+     - Manual steps are minimized and are only required at 1-2 places (one-time setups)
+     - All the deployments are done using the infrastructure as a code (IaaS), configurations
+5. Compliance: 
+   - All the services are deployed in a secure and compliant way
+   - Data is always encrypted in transit and at rest with SQS and DynamoDB
 
-
-
-#### Test out the service by using following APIs:
-Live Hosting URL: http://ab375f2b3c43e44099cd13254ae94934-30142821.ap-south-1.elb.amazonaws.com 
+### Test out the service
+ Live Hosting URL: http://ab375f2b3c43e44099cd13254ae94934-30142821.ap-south-1.elb.amazonaws.com 
 1. Add a new post for tag
    - POST `/post/tag`
    - Request Body:
@@ -41,4 +42,11 @@ Live Hosting URL: http://ab375f2b3c43e44099cd13254ae94934-30142821.ap-south-1.el
         "tags": ["kafka", "java", "shell"]
      }
      ```
-     
+
+When model initially runs, it will take some time to load the model and start serving the requests. You can check the logs of the AI Model service to see the status of the model loading.
+But once model is loaded, it will start serving the requests quickly.
+First post tag request might take approx 2-3 minutes to generate the tags as model loads in memory, generate response and then tags will be available in the DB but subsequent requests will be faster and tags will be available in the DB within seconds.
+
+### Testing CI/CD workflows
+You can test out the workflows by making changes in the code and pushing them to the master branch. The workflows will be triggered automatically and the changes will be deployed to the production environment.
+I am not actively running the GitHub self-hosted runner for this. If required, let me know, I will start the runner, and you can test the workflows.
