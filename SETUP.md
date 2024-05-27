@@ -1,15 +1,18 @@
+# Setup for running in Local
 ### Prerequisites
 - Docker
 - Python 3.x
 - AWS Account
 - AWS CLI configured with appropriate permissions
-- PyCharm (optional)
  - .env file with necessary environment variables
 
 ### Create AWS SQS Queue
-Create an SQS queue in your AWS account, and update the [.env file](local.env) with the necessary details.
-
-# Setup for running in Local:
+Create two SQS queues in your AWS account
+1. tag-request-queue - normal queue
+2. tag-request-dlq - dead letter queue
+3. copy the env.example to .env
+   - `cp env.example .env`
+4. Update the .env file with the queue names
 
 ### Build and Run AI Model Service in Docker
 
