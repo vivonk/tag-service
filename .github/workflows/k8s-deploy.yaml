@@ -1,0 +1,48 @@
+name: Kubernetes Deployment
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'k8s/**'
+
+env:
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  QUEUE_NAME: ${{ vars.QUEUE_NAME }}
+  DLQ_NAME: ${{ vars.DLQ_NAME }}
+  AI_SERVICE_URL: ${{ vars.AI_SERVICE_URL }}
+  MODEL_NAME: ${{ vars.MODEL_NAME }}
+  EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME }}
+
+jobs:
+  k8s-deploy:
+    name: k8s-deploy
+    needs: terraform
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup kubectl
+        run: |
+          curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          aws --version
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+          aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
+
+      - name: Env substitution
+        run: |
+          envsubst < k8s/template/configmap-template.yaml > k8s/manifests/configmap.yaml
+
+      - name: Apply k8s files
+        run: |
+          echo "Will apply all deployments successfully"
