@@ -32,11 +32,11 @@ jobs:
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
-          ./aws/install --update
+          sudo ./aws/install --update
           aws --version
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           chmod +x kubectl
-          mv kubectl /usr/local/bin/
+          sudo mv kubectl /usr/local/bin/
           aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
 
       - name: Env substitution
@@ -46,4 +46,5 @@ jobs:
       - name: Apply k8s files
         run: |
           echo "Will apply all deployments successfully"
+          kubectl version --client
           kubectl get pods -n docket
