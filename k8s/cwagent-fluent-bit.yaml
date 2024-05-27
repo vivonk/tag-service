@@ -188,8 +188,8 @@ spec:
 # and need to replace "Off" and "On"
 apiVersion: v1
 data:
-  cluster.name: eks-tag-service
-  logs.region: ap-south-1
+  cluster.name: "eks-tag-service"
+  logs.region: "ap-south-1"
   http.server: "On"
   http.port: "2020"
   read.head: "Off"

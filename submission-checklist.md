@@ -18,7 +18,11 @@
      - CI/CD pipeline is used to automate the deployment process
      - Manual steps are minimized and are only required at 1-2 places (one-time setups)
      - All the deployments are done using the infrastructure as a code (IaaS), configurations
-5. Compliance: 
+5. Logging and Monitoring:
+    - Cloudwatch is used to store the logs and metrics of the services
+    - We use cloudwatch agents to collect logs and metrics from kubernetes pods
+    - GitHub Actions is used to monitor the workflows
+6. Compliance: 
    - All the services are deployed in a secure and compliant way
    - Data is always encrypted in transit and at rest with SQS and DynamoDB
 
