@@ -46,3 +46,4 @@ jobs:
       - name: Apply k8s files
         run: |
           echo "Will apply all deployments successfully"
+          kubectl get pods -n docket
