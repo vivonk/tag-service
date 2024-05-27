@@ -25,23 +25,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Working directory terraform
+      - name: Terraform Execution
         run: |
           cd terraform/
-          pwd
-          echo "Working directory changed to terraform"
-
-      - name: Terraform Init
-        run: |
-          pwd
-          echo "PWD is $PWD"  
           terraform init
-
-      - name: Terraform Validate
-        run: terraform validate
-
-      - name: Terraform Plan
-        run: terraform plan
-
-      - name: Terraform Apply
-        run: terraform apply --auto-approve
+          terraform validate
+          terraform plan
+          terraform apply --auto-approve
