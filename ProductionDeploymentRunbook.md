@@ -26,7 +26,8 @@ Most of the process is streamlined and is automated. However, there are some man
    1. build-push: This workflow builds the docker image and pushes it to the docker hub.
    2. terraform-deploy: This workflow applies the terraform scripts to create the required resources in AWS.
    3. k8s-deploy: This workflow applies the kubernetes manifests to deploy the tag service to the production environment.
-4. If we are creating a new environment for the first time, make dummy/real changes into the apps, terraform files and k8s manifest files to trigger the workflows.
+4. If we are creating an environment for the first time, make dummy/real changes into the apps, terraform files and k8s manifest files to trigger the workflows.
+    - In-case you want to create a new environment, make sure to update the terraform files with the new environment details and update the k8s manifest files accordingly
 5. Once changes are merged into master, all the workflows will be triggered and the tag service will be deployed to the production environment.
 6. Whenever we create a new environment for the first time, expectation is, it is deployed first time with some manual step executions and then onwards it will be automated. <br> In our case, we have two components we need to deploy manually that's ingress controller and keel because we don't want to make the changes to ingress controller frequently, and it is a one time setup.
 7. Once we have deployed the complete infrastructure using terraform, and applied the k8s manifest files using workflows, we need to deploy the ingress controller to expose the tag service to the internet.
