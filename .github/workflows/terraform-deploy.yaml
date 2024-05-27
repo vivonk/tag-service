@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'terraform/**'
+      - './.github/workflows/terraform-deploy.yaml'
 
 env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -18,23 +19,23 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Working directory terraform
-      run: cd terraform
+      - name: Working directory terraform
+        run: cd terraform
 
-    - name: Terraform Init
-      run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-    - name: Terraform Validate
-      run: terraform validate
+      - name: Terraform Validate
+        run: terraform validate
 
-    - name: Terraform Plan
-      run: terraform plan
+      - name: Terraform Plan
+        run: terraform plan
 
-    - name: Terraform Apply
-      run: terraform apply --auto-approve
+      - name: Terraform Apply
+        run: terraform apply --auto-approve

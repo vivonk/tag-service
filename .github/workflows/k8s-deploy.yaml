@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'k8s/**'
+      - './.github/workflows/k8s-deploy.yaml'
 
 env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -21,7 +22,6 @@ env:
 jobs:
   k8s-deploy:
     name: k8s-deploy
-    needs: terraform
     runs-on: self-hosted
 
     steps:
