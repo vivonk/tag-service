@@ -3,15 +3,15 @@ from botocore.exceptions import ClientError
 
 import app.config
 from app.config import aws_account_id
+
 sqs = boto3.client('sqs')
 
 from loguru import logger
 
 logger = logger.bind(name="sqs")
 
+
 def add_message(message: str, queue_name: str):
-	logger.info(app.config.aws_account_id)
-	logger.info(app.config.ai_service_url)
 	try:
 		response = sqs.send_message(
 			QueueUrl=get_queue_url(queue_name),

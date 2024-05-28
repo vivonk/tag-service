@@ -16,9 +16,19 @@ async def startup_event():
 	logger.info("Starting up the application")
 
 
+"""
+API for ingesting a post tag request in system
+"""
+
+
 @app.post("/post/tag")
 async def tag_post(request: tagging.TaggingRequest):
 	return post_service.add_post(request)
+
+
+"""
+API for getting a post with tags by post_id
+"""
 
 
 @app.get("/post/{post_id}", response_model=post.Post)

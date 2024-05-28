@@ -1,3 +1,5 @@
+import time
+
 from fastapi import Response, HTTPException, status
 
 from app.exception.RepositoryException import RepositoryException
@@ -6,18 +8,19 @@ import app.model.post as post
 from app.repository import post as post_repo
 from app.queue import post_producer
 import urllib3
+
 urllib3.disable_warnings()
 from loguru import logger
-
 
 logger = logger.bind(name="post_service")
 
 """
-This function is used to add a post to the database and alongside add the same tag request to the kafka topic
+This function is used to add a post to the database and alongside add the same tag request to the SQS topic
 """
 
+
 def add_post(request: TaggingRequest):
-	new_post = post.Post(post_id=request.post_id, content=request.content)
+	new_post = post.Post(post_id=request.post_id, content=request.content, added_time=time.time())
 	try:
 		value = find_post(new_post.post_id)
 		if value is not None:
@@ -34,6 +37,12 @@ def add_post(request: TaggingRequest):
 		raise HTTPException(status_code=500, detail="Unable to accept posts for tagging. Please try again later.")
 
 
+"""
+This function is used to find a post from the database by post_id
+Returns None if post is not found
+"""
+
+
 def find_post(post_id: str):
 	try:
 		logger.info(f"Fetching post with id {post_id} from the database")
@@ -42,6 +51,12 @@ def find_post(post_id: str):
 	except RepositoryException:
 		logger.error("Error while fetching post from the database")
 		raise HTTPException(status_code=500, detail="Unable to find posts right now. Please try again later.")
+
+
+"""
+This function is used to get a post from the database by post_id
+This function raises a 404 error if the post is not found
+"""
 
 
 def get_post(post_id: str):

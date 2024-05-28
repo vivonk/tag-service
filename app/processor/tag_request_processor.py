@@ -1,3 +1,5 @@
+import time
+
 import app.repository.post as post_repository
 from app.service import ai_service
 from loguru import logger
@@ -16,9 +18,9 @@ def process(message):
 	# Process the post
 	tags = ai_service.tag_content(post.content)
 	if len(tags) == 0:
-		logger.error("No tags found for post: {0}", post_id)
+		logger.error("No tags applicable for post: {0}", post_id)
 		return
-
+	post.updated_time = time.time()
 	# Add the tags to the post
 	post.tags = tags
 	post_repository.update_post(post)
