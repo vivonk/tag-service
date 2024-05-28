@@ -3,7 +3,7 @@ Tag service is designed to provide a way to tag posts in the forum. Tag service 
 Current implementation is designed to process the tag requests asynchronously. 
 
 ## Feature
-We are replicating the tagging feature of Stackoverflow but with the twist of AI.
+We are replicating the tagging feature of Dev.to but with the twist of AI.
 User will simply post on the forum, and we receive a tag request for that post. Based on our models understanding, we will generate tags automatically for the post and store it in the database.
 Later, whenever forum service requires tags for a post, it can simply query our service and get the tags.
 
