@@ -27,7 +27,7 @@ def make_request(content):
 		"format": "json",
 		"stream": False
 	}
-	response = requests.post(url, json=body, timeout=180)
+	response = requests.post(url, json=body, timeout=240)
 	if response.status_code != 200:
 		logger.error(f"Failed to tag content: {response.text}")
 		raise Exception("Failed to tag content")
