@@ -29,7 +29,7 @@ def add_post(request: TaggingRequest):
 		post_repo.add_post(new_post)
 		message_sent = post_producer.add_post(new_post)
 		if message_sent:
-			logger.info(f"Post with id {new_post.post_id} added to the database and sent for tagging")
+			logger.debug(f"Post with id {new_post.post_id} added to the database and sent for tagging")
 			return Response(status_code=status.HTTP_201_CREATED)
 		raise HTTPException(status_code=500, detail="Unable to accept posts for tagging. Please try again later.")
 	except RepositoryException:
@@ -45,7 +45,6 @@ Returns None if post is not found
 
 def find_post(post_id: str):
 	try:
-		logger.info(f"Fetching post with id {post_id} from the database")
 		value = post_repo.find_post(post_id)
 		return value
 	except RepositoryException:

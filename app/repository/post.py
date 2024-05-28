@@ -44,7 +44,7 @@ def find_post(post_id: str):
 		post_id_key: post_id
 	}
 	try:
-		logger.info(f"Fetching post with id {post_id} from the database")
+		logger.debug(f"Fetching post with id {post_id} from the database")
 		value = dynamodb.find_item(key, table_name)
 		if value is None:
 			return None
@@ -68,7 +68,7 @@ def update_post(post: Post):
 		updated_time_key: post.updated_time
 	}
 	try:
-		logger.info(f"Updating post with id {post.post_id} in the database")
+		logger.debug(f"Updating post with id {post.post_id} in the database")
 		return dynamodb.add_item(obj, table_name)
 	except DbException:
 		logger.error("Error while updating post in the database")

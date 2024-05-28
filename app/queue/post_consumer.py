@@ -27,7 +27,7 @@ def process_dlq():
 			try:
 				tag_request_processor.process(message.body)
 			except Exception as e:
-				logger.error(f"exception while processing message: {repr(e)}")
+				logger.error(f"exception while processing message: {e}")
 				continue
 			message.delete()
 
@@ -39,7 +39,7 @@ def process_queue():
 			try:
 				tag_request_processor.process(message.body)
 			except Exception as e:
-				logger.error(f"exception while processing message: {repr(e)}")
+				logger.error(f"exception while processing message: {e}")
 				continue
 			message.delete()
 
